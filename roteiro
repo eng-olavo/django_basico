@@ -1,0 +1,208 @@
+2 - aula 18
+
+. criar o projeto : basico (ou django1), co a virtual env
+. pip install django
+. pip freeze > requirements.txt
+
+3 - aula 19
+
+.  django-admin startproject basico .
+
+
+4 - aula 20
+
+. django-admin startapp core
+. settings.py
+
+INSTALLED_APPS = [
+   {{adicionar....}}
+    'core'
+]
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [templates],
+        {{ adicionar .... templates ao DIRS}}
+
+
+5 - aula 21
+== aula teórica,nada adicionado ==
+
+6 - aula 22
+== aula teórica,nada adicionado ==
+
+7 - aula 23
+
+. python manage.py runserver
+
+. settings.py
+
+. LANGUAGE_CODE = 'en-us' {{alterar para ....}} 'pt-br'
+
+. TIME_ZONE = 'UTC' {{alterar para ...}} 'Americas/Sao Paulo'
+
+
+8 - aula 24
+
+> Core > views.py
+
+from django.shortcuts import render
+
+def index(request):
+    return render(request, 'index.html')
+
+def contato(request):
+    return render(request,'contato.html')
+
+
+9 - aula 25
+
+em basico > urls.py:
+
+rom django.contrib import admin
+from django.urls import path, include  {{ adicionar o include}}
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('core.urls')),     {{ adicionar a rota para o core.urls}}
+]
+
+Criar o urls.py no app core !
+> Core > urls.py
+
+{{ adicionar ...}}
+from django.urls import path
+from .views import index, contato
+
+urlpatterns = [
+    path('', index),
+    path('contato', contato),
+]
+
+10 - aula 26
+
+Criar em Core a pasta: templates
+
+em templates criar os arquivos .html:  index.html e contato.html
+
+python manage.py runserver....
+
+Renderizar páginas HTML com informações enviadas pelo Python:
+
+em core > views.py:
+
+def index(request):
+    context = {
+        'curso': 'Programação Web com Django Framework'
+    }
+    return render(request, 'index.html', context)
+
+no index. html:
+
+<body>
+    <h3>Index</h3>
+
+    <h2>{{ curso }}</h2>
+
+</body>
+
+11 - aula 27
+
+Arquivo: Core > models.py
+
+Criar o modelo: (Produto)
+
+class Produto(models.Model):
+    nome = models.CharField('Nome', max_length=100)
+    preco = models.DecimalField('Preço', decimal_places=2, max_digits=8)
+    estoque = models.IntegerField('Quantidade em estoque')
+
+. python manage.py makemigrations
+
+. python manage.py migrate
+
+** O Django cria o arquivo 0001_initial.py: *** Não precisa acrescentar ***
+operations = [
+        migrations.CreateModel(
+            name='Produto',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nome', models.CharField(max_length=100, verbose_name='Nome')),
+                ('preco', models.DecimalField(decimal_places=2, max_digits=8, verbose_name='Preço')),
+                ('estoque', models.IntegerField(verbose_name='Quantidade em estoque')),
+            ],
+        ),
+    ]
+
+. Criar outro modelo: (Cliente)
+
+class Cliente(models.Model):
+    nome = models.CharField('Nome', max_length=100)
+    sobrenome = models.CharField('Nome', max_length=100)
+    email = models.EmailField('E-mail', max_length=100)
+
+. python manage.py makemigrations
+
+. python manage.py migrate
+
+** O Django cria o arquivo 0002_initial.py:
+ operations = [
+        migrations.CreateModel(
+            name='Cliente',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nome', models.CharField(max_length=100, verbose_name='Nome')),
+                ('sobrenome', models.CharField(max_length=100, verbose_name='Nome')),
+                ('email', models.EmailField(max_length=100, verbose_name='E-mail')),
+            ],
+        ),
+    ]
+
+12 - Aula 28
+
+.python manage.py createsuperuser
+
+(venv) D:\Google Drive\UDEMY\CURSO DJANGO GEEK UNIVERSITY\basico>python manage.py createsuperuser
+Usuário (leave blank to use 'olavo'): admin
+Endereço de email: admin@admin.com.br
+1234
+
+no arquivo core > admin.py:
+
+from django.contrib import admin
+
+from .models import Produto, Cliente
+
+
+admin.site.register(Produto)
+admin.site.register(Cliente)
+
+
+em models.py:
+
+    Em Class Produto, adicionar:
+
+    def __str__(self):
+        return self.nome
+
+    Em Class Cliente, adicionar:
+
+    def __str__(self):
+    return f'{self.nome} {self.sobrenome}'
+
+em admin.py:
+
+class ProdutoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'preco', 'estoque')
+
+admin.site.register(Produto, ProdutoAdmin)
+
+
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sobrenome', 'email')
+
+admin.site.register(Cliente, ClienteAdmin)
+
+*** DICA:
+Substituir o path: /admin, para outro nome por questões de segurança, por exemplo: painel
