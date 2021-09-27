@@ -206,3 +206,38 @@ admin.site.register(Cliente, ClienteAdmin)
 
 *** DICA:
 Substituir o path: /admin, para outro nome por questões de segurança, por exemplo: painel
+
+
+
+13 - Aula 29
+
+** Uso do django Shell
+
+
+def index(request):
+    print(dir(request).user)
+    print(f"User: {request.user}")
+
+    if str(request.user) == 'AnonymousUser':
+        teste = 'Usuário não está logado!'
+    else:
+        teste = 'Usuário logado!'
+
+    context = {
+        'curso': 'Programação com Django',
+        'logado': teste
+    }
+
+
+14 - Aula 30
+
+* ler todos os objetis existentes no BD Produtos;
+em views.py:
+
+from .models import Produto
+
+def index(request):
+    produtos = Produto.objects.all()
+
+No index.html:
+
