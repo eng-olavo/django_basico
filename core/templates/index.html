@@ -1,11 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
 </head>
 <body>
     <h3>Index</h3>
+
+    <img src="{% static 'images/django.jpg' %}"/>
 
     <h4>{{ curso }}</h4>
 
@@ -27,5 +31,9 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <button onclick="teste();">Click</button>
+
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

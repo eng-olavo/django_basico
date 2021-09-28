@@ -240,4 +240,107 @@ def index(request):
     produtos = Produto.objects.all()
 
 No index.html:
+<table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+                <tr>
+                    <td><a href="{% url 'produto' produto.id %}">{{ produto.nome }}</a></td>
+                    <td>{{ produto.preco }}</td>
+                    <td>{{ produto.estoque }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+no produto.html:
+
+<table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="{% url 'index' %}">{{ produto.nome }}</a></td>
+                <td>{{ produto.preco }}</td>
+                <td>{{ produto.estoque }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+15 - aula 31
+
+Criar a pasta: core > static;
+Criar os subdiretórios: css, js e images
+
+em settings:
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') ## durante a produção
+
+criar o estilo.css
+adicionar a linha antes do !DOCTYPE
+{% load static %}
+
+no <head>:
+<link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+
+no estilo.css:
+
+body{
+    background-color: #341256;
+    color: #ffffff;
+}
+
+a {
+    text-decoration:none;
+    color: #ffffff;
+}
+
+acrescentar uma imagem jpg:
+
+<img src="{% static 'images/django.jpg' %}"/>
+
+
+acrescentar código javascript:
+
+no index.html:
+
+<button onclick="teste();">Click</button>
+
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+criar o arquivo script.js;
+
+function teste(){
+    alert('alerta!');
+}
+
+Adicionar ERROR 404, quando o usuário pesquisar um produto que não tem id no BD.
+
+em views.py:
+
+from django.shortcuts import render, get_object_or_404
+
+def produto(request, pk):
+    #prod = Produto.objects.get(id=pk) alterar para :
+    prod = get_object_or_404(Produto, id=pk)
+
+def error404(request):
+    return render(request, '404.html')
+
+em basico > urls.py:
+
+from django.conf.urls import handler404
+from core import views
+
+handler404 = views.error404
