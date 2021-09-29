@@ -3,7 +3,15 @@ body{
     color: #ffffff;
 }
 
-a {
+a{
     text-decoration: none;
     color: #ffffff;
 }
+
+table{
+  border: 1px solid white;
+  width: 100%;
+  text-align: center;
+  vertical-align: center;
+}
+

@@ -1,3 +1,3 @@
 function teste(){
-    alert('alerta!');
+    alert('Programação Web com Django Framework');
 }
