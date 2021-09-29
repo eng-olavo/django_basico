@@ -325,22 +325,8 @@ function teste(){
     alert('alerta!');
 }
 
-Adicionar ERROR 404, quando o usuário pesquisar um produto que não tem id no BD.
 
-em views.py:
+--- Logout: redirecionar para o index.html quando sair do admin
+em settings:
 
-from django.shortcuts import render, get_object_or_404
-
-def produto(request, pk):
-    #prod = Produto.objects.get(id=pk) alterar para :
-    prod = get_object_or_404(Produto, id=pk)
-
-def error404(request):
-    return render(request, '404.html')
-
-em basico > urls.py:
-
-from django.conf.urls import handler404
-from core import views
-
-handler404 = views.error404
+LOGOUT_REDIRECT_URL = 'index'

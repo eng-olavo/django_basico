@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
 from .models import Produto
 
@@ -21,5 +21,3 @@ def produto(request, pk):
     }
     return render(request, 'produto.html', context)
 
-def error404(request, exception):
-    return render(request, '404.html')
